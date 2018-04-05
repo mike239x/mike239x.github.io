@@ -14,6 +14,7 @@ Hello World!
 
 <p style = 'background-color: #ff0000'> my eyes!</p>
 
+<div id = 'pic1'></div>
 <script type="text/javascript">
 new p5(function (p) {
     var r = 40;
@@ -47,7 +48,7 @@ new p5(function (p) {
         thing();
     }
     p.draw = function(){};
-},'task1');
+},'pic1');
 </script>
 
 More text, this time with a formula: $\Omega \in \mathbb{R}$.
