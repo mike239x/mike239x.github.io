@@ -6,15 +6,21 @@
 <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 <script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});</script>
 
-# H3 or something
+<img src="shrug.jpg" alt="shrug.jpg">
+Wow. it is so empty here. I guess this page is under construction.
 
-Hello World!
+Well, anyways. If you are here to visit my website, you are to the right place actually!
+But there isn't much here.
 
-[github pages](https://pages.github.com/)
+You can check out my [javascript creations](https://mike239x.github.io/p5js-projects/) made with the help of [p5.js](https://p5js.org/) framework.
+Alternatively, you can visit my [github page](https://github.com/mike239x).
 
-<p style = 'background-color: #ff0000'> my eyes!</p>
 
-<div id = 'pic1'></div>
+Last but not the least: my [FaceBook](https://www.facebook.com/mike.lezhnin).
+
+<!-- <p style = 'background-color: #ff0000'> my eyes!</p> -->
+
+<!-- <div id = 'pic1'></div>
 <script type="text/javascript">
 new p5(function (p) {
     var r = 40;
@@ -49,6 +55,6 @@ new p5(function (p) {
     }
     p.draw = function(){};
 },'pic1');
-</script>
+</script> -->
 
-More text, this time with a formula: $\Omega \in \mathbb{R}$.
+<!-- More text, this time with a formula: $\Omega \in \mathbb{R}$. -->
