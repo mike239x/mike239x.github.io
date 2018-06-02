@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="mystyle.css">
+    <!-- p5.js for nice pictures -->
+    <script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.min.js"></script>
+    <script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/addons/p5.dom.min.js"></script>
+    <!-- <script src="../libs/p5.sound.min.js"></script> -->
+    <!-- MathJax for fancy math formulas -->
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});</script>
+</head>
+<body>
+
+<div>
+<p>Содержание:</p>
+<ul>
+<li><a href="#planimetry">Планиметрия</a></li>
+<li><a href="#3d-sets">Фигуры в пространстве</a></li>
+<li><a href="#shapes">Тела</a></li>
+<li><a href="#polyhedra">Многогранники</a></li>
+</ul>
+</div>
+
+<h3 id = 'planimetry'>Планиметрия</h1>
+<button class = 'task'>Задача номер 1</button>
+<div class = 'panel' id = 'task1'>
+<p class = 'statement'>
+Докажите, что квадрат можно разрезать на $1980$ равных $1981$-угольников.
+</p>
+<p class = 'proof'>
+Разрежем квадрат на $1980/2 = 990$ равных прямоугольников,
+затем разрежем каждую из получившихся полосок на два равных
+$1981$-угольника. Ниже нарисован пример разбиения квадрата на шесть
+семиугольников, сделанный таким-же способом.
+</p>
+<span id = 'task1-pic1'></span>
+<script type="text/javascript">
+new p5(function (p) {
+    var r = 40;
+    function thing() {
+        p.beginShape();
+        p.vertex(0,0);
+        p.vertex(r,0);
+        p.vertex(r*0.3,r*0.6);
+        p.vertex(r*0.7,r*1.2);
+        p.vertex(r*0.3,r*1.8);
+        p.vertex(r*0.7,r*2.4);
+        p.vertex(0,r*3);
+        p.endShape(p.CLOSE);
+    }
+    p.setup = function() {
+        p.createCanvas(20+3*r,20+3*r);
+        p.fill(255);
+        p.stroke(0);
+        p.translate(10,10);
+        thing();
+        p.translate(r,0);
+        thing();
+        p.translate(r,0);
+        thing();
+        p.translate(-r,3*r);
+        p.rotate(p.PI);
+        thing();
+        p.translate(-r,0);
+        thing();
+        p.translate(-r,0);
+        thing();
+    }
+    p.draw = function(){};
+},'task1-pic1');
+</script>
+</div>
+<button class = 'task'>Задача номер 2</button>
+<div class = 'panel' id = 'task2'>
+<p class = 'statement'>
+Можно ли разрезать квадрат на $1980$ выпуклых $1981$-угольников?
+</p>
+<p class = 'proof'>
+Нет, нельзя. Предположим, что такое разбиение возможно.
+Рассмотрим граф $G$, в котором вершины соответствуют $1981$-угольникам
+из разбиения, и две вершины соединены ребром,
+если соответствующие многоугольники пересекаются по отрезку.
+$G$ является планарным графом (это несложно вывести из того,
+что граф, дуальный к планарному тоже является планарным).
+Из-за выпуклости любые два $1981$-угольника могут касаться максимум
+по одной стороне (касание по точке нас не интересует), а сторон у каждого
+$1981$-угольника $1981$, поэтому у соответствующей вершины в $G$  степень хотя бы
+$1981-4 = 1977$ ("$-4$" появилось из-за того, что многоугольник может опираться на
+стороны исходного квадрата, соотвественно, к этим сторонам ничего не примыкает).
+Тогда число рёбер в $G$ можно оценить как $1977\cdot 1980/2$. С другой стороны,
+$G$ -- планарный граф, а потому число ребёр в нём не больше $3\cdot 1980 - 6$.
+Из двух полученных оценок имеем противоречие.
+</p></div>
+<button class = 'task'>Задача номер 3</button>
+<div class = 'panel' id = 'task3'>
+<p class = 'statement'>
+Докажите, что треугольник можно разрезать на многоугольники
+$M_3, M_4, \ldots, M_{1981}$, где $M_k$ --- $k$-угольник.
+Могут ли все эти многоугольники быть выпуклыми?
+</p>
+<p class = 'proof'>
+Пример разрезания треугольника на многоугольники
+$M_3, M_4, \ldots, M_{9}$, где $M_k$ --- $k$-угольник:
+</p>
+<span id = 'task3-pic1'></span>
+<script type="text/javascript">
+new p5(function (p) {
+    var r = 40;
+    function drawLayer(n) {
+        p.beginShape();
+        p.vertex(0,0);
+        if (n > 0) {
+            p.vertex(r/2,r*0.7);
+            for (let i = 1; i < n; i++) {
+                p.vertex(i*r,r*0.3);
+                p.vertex(i*r+r/2,r*0.7);
+            }
+            p.vertex(n*r+r/2,r/2);
+            p.vertex(n*r,0);
+            p.endShape(p.CLOSE);
+
+            p.beginShape();
+            p.vertex(0,0);
+            p.vertex(r/2,r*0.7);
+            for (let i = 1; i < n; i++) {
+                p.vertex(i*r,r*0.3);
+                p.vertex(i*r+r/2,r*0.7);
+            }
+            p.vertex(n*r+r/2,r/2);
+        }
+        p.vertex(n*r+r,r);
+        p.vertex(0,r);
+        p.endShape(p.CLOSE);
+    }
+    p.setup = function() {
+        p.createCanvas(20+4*r,20+4*r);
+        p.fill(255);
+        p.stroke(0);
+        p.translate(10,10);
+        drawLayer(0);
+        p.translate(0,r);
+        drawLayer(1);
+        p.translate(0,r);
+        drawLayer(2);
+        p.translate(0,r);
+        drawLayer(3);
+    }
+    p.draw = function(){};
+},'task3-pic1');
+</script>
+<p class = 'proof'>
+Аналогично делается разбиение из задачи.
+</p><p class = 'proof'>
+Разбить треугольник на выпуклые многоугольники невозможно:
+по аналогии с задачей 2, построим граф  $G$ с многоугольниками из
+разбиения в виде вершин и ребрами между теми вершинами, которые соответствуют
+многоугольникам, пересекающимся по отрезку.
+$G$ является планарным графом, а потому число ребёр в нём не больше, чем
+ $3\cdot 1979 - 6$.
+Из-за выпуклости мы имеем, что у многоугольника $M_k$ как минимум $k-3$
+соседа, и потому число рёбер в $G$ можно оценить снизу как
+$$\frac{1}{2}\cdot \sum_{k=3}^{1981}{(k-3)}.$$
+Из двух полученных оценок имеем противоречие.
+</p>
+</div>
+<button class = 'task'>Задача номер 4</button>
+<div class = 'panel' id = 'task4'>
+<p class = 'statement'>
+Докажите, что для каждого натурального $n\ge 3$ плоскость можно разрезать на
+равные $n$-угольники, все стороны которых равны.
+</p>
+<p class = 'proof'>
+...
+</p></div>
+<button class = 'task'>Задача номер 5</button>
+<div class = 'panel' id = 'task5'>
+<p class = 'statement'>
+Докажите, что плоскость можно разрезать на такие многоугольники
+$M_3, M_4, \ldots$, что для каждого $k\ge 3$ $M_k$ --- $k$-угольник,
+длины всех сторон которого равны 1.
+</p>
+<p class = 'proof'>
+...
+</p></div>
+<h3 id = '3d-sets'>Фигуры в пространстве</h3>
+<button class = 'task'>Задача номер 6</button>
+<div class = 'panel' id = 'task6'>
+<p class = 'statement'>
+Существует ли фигура $F$ в пространстве, обладающая следующим свойством:
+для каждой прямой $p$ пересечение $F$ и $p$ является отрезком длиной 1?
+</p>
+<p class = 'proof'>
+...
+</p></div>
+<button class = 'task'>Задача номер 7</button>
+<div class = 'panel' id = 'task7'>
+<p class = 'statement'>
+Существует ли фигура $F$ в пространстве, отличная от пустого множества,
+обладающая следующим свойством: для каждой прямой $p$, такой что
+пересечение $F$ и $p$ непусто, это пересечение является отрезком длины 1?
+</p>
+<p class = 'proof'>
+...
+</p></div>
+<button class = 'task'>Задача номер 8</button>
+<div class = 'panel' id = 'task8'>
+<p class = 'statement'>
+Существует ли множество, содержащее $1981!$ точек, все расстояния
+между точками которого целочисленны и не превосходят 1981?
+</p>
+<p class = 'proof'>
+...
+</p></div>
+<button class = 'task'>Задача номер 9</button>
+<div class = 'panel' id = 'task9'>
+<p class = 'statement'>
+Существует ли неограниченная фигура, каждое сечение которой ограниченно?
+</p>
+<p class = 'proof'>
+...
+</p></div>
+<button class = 'task'>Задача номер 10</button>
+<div class = 'panel' id = 'task10'>
+<p class = 'statement'>
+Существует ли фигура, обладающая следующими свойствами:
+<ul>
+    <li>пересечение её с каждым шаром непусто;</li>
+    <li>каждое её сечение ограниченно?</li>
+</ul>
+</p>
+<p class = 'proof'>
+...
+</p></div>
+<h3 id = 'shapes'>Тела</h3>
+<button class = 'task'>Задача номер 11</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 12</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 13</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 14</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 15</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 16</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 17</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 18</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 19</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 20</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 21</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 22</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 23</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 24</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 25</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 26</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 27</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 28</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 29</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 30</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 31</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 32</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 33</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 34</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 35</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 36</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 37</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 38</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 39</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<h3 id = 'polyhedra'>Многогранники</h3>
+<button class = 'task'>Задача номер 40</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 41</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 42</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 43</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 44</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 45</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 46</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 47</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 48</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 49</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 50</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 51</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+<button class = 'task'>Задача номер 52</button>
+<div class = 'panel' id = 'task1'>
+    texty text
+</div>
+
+
+<!-- <script type="text/javascript">
+new p5(function (p) {
+    p.setup = function() {
+        p.createCanvas(600,400);
+        p.rect(300,200,100,100);
+    }
+    p.draw = function(){};
+},'task1');
+</script> -->
+
+<!-- make tasks foldable -->
+<script language="javascript" type="text/javascript" src="fold-tasks.js"></script>
+  </body>
+</html>
